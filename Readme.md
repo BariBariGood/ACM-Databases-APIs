@@ -58,13 +58,6 @@ Add the following content to your `.env` file:
 MONGO_URI=mongodb+srv://<username>:<password>@<cluster-url>/?retryWrites=true&w=majority
 ```
 
-Ensure that your `.env` file is **not committed** to version control by adding it to `.gitignore`:
-
-```
-# Ignore environment variables
-.env
-```
-
 ---
 
 ## **Step 4: Prepare JSON Data**
