@@ -2,6 +2,8 @@
 
 This guide provides step-by-step instructions to set up and interact with **MongoDB Atlas** using **Python**, starting from setting up a virtual environment to performing CRUD operations.
 
+These instructions are intended for those setting up their own project. If you are cloning a repository, refer to the repository-specific instructions in the `README.md` file.
+
 ---
 
 ## **Step 1: Project Setup**
@@ -32,10 +34,22 @@ You should see `(venv)` at the beginning of your terminal prompt.
 
 ## **Step 2: Install Dependencies**
 
-Install the necessary MongoDB Python driver:
+If you are setting up the project for the first time, install the necessary dependencies from `requirements.txt`:
 
 ```bash
-pip install "pymongo[srv]"
+pip install -r requirements.txt
+```
+
+If `requirements.txt` does not exist, you can manually install the dependencies:
+
+```bash
+pip install "pymongo[srv]" python-dotenv
+```
+
+Then, generate `requirements.txt` for future use:
+
+```bash
+pip freeze > requirements.txt
 ```
 
 Verify installation:
@@ -46,7 +60,32 @@ pip freeze | grep pymongo
 
 ---
 
-## **Step 3: Prepare JSON Data**
+## **Step 3: Set Up Environment Variables**
+
+Create a `.env` file in the project directory to store sensitive information:
+
+```bash
+touch .env
+```
+
+Add the following content to your `.env` file:
+
+```
+# MongoDB Atlas Connection String
+# Replace <username>, <password>, and <cluster-url> with your actual MongoDB credentials
+MONGO_URI=mongodb+srv://<username>:<password>@<cluster-url>/?retryWrites=true&w=majority
+```
+
+Ensure that your `.env` file is **not committed** to version control by adding it to `.gitignore`:
+
+```
+# Ignore environment variables
+.env
+```
+
+---
+
+## **Step 4: Prepare JSON Data**
 
 Create a `data.json` file in the project directory:
 
@@ -72,17 +111,22 @@ Create a `data.json` file in the project directory:
 
 ---
 
-## **Step 4: Python Script to Work with MongoDB**
+## **Step 5: Python Script to Work with MongoDB**
 
 Create a new Python file called `mongodb_app.py`:
 
 ```python
 import json
+import os
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
+from dotenv import load_dotenv
 
-# MongoDB Atlas connection string (replace with your credentials)
-uri = "mongodb+srv://indelrio:0310@acm-demo-test1.pabqm.mongodb.net/?retryWrites=true&w=majority"
+# Load environment variables from .env file
+load_dotenv()
+
+# Get MongoDB URI from environment variables
+uri = os.getenv("MONGO_URI")
 
 # Connect to MongoDB Atlas
 client = MongoClient(uri, server_api=ServerApi('1'))
@@ -102,7 +146,7 @@ collection = db["students"]
 with open("data.json", "r") as file:
     students_data = json.load(file)
 
-# Insert data into MongoDB
+# Insert data into MongoDB collection
 insert_result = collection.insert_many(students_data)
 print(f"Inserted {len(insert_result.inserted_ids)} documents into the students collection.")
 
@@ -111,16 +155,12 @@ print("\nRetrieved documents from MongoDB:")
 for student in collection.find():
     print(student)
 
-# Optional: Cleanup - Comment to keep data
-# collection.delete_many({})
-# print("\nDeleted all records after demonstration.")
-
 client.close()
 ```
 
 ---
 
-## **Step 5: Running the Script**
+## **Step 6: Running the Script**
 
 Run the Python script to insert and retrieve data:
 
@@ -141,45 +181,12 @@ Retrieved documents from MongoDB:
 
 ---
 
-## **Step 6: Verify Data in MongoDB Atlas**
+## **Step 7: Verify Data in MongoDB Atlas**
 
 1. Go to **MongoDB Atlas Dashboard.**
 2. Navigate to your cluster and click **"Browse Collections."**
 3. Select the **`cs_club_demo.students`** collection to view the inserted data.
 4. Click **Refresh** if needed.
-
----
-
-## **Step 7: Additional Operations**
-
-### **7.1 Query Data Using Filters**
-
-```python
-print("\nStudents older than 21:")
-for student in collection.find({"age": {"$gt": 21}}):
-    print(student)
-```
-
-### **7.2 Update a Document**
-
-```python
-collection.update_one({"name": "Alice Johnson"}, {"$set": {"age": 22}})
-print("\nUpdated Alice's age to 22.")
-```
-
-### **7.3 Delete a Document**
-
-```python
-collection.delete_one({"name": "Bob Smith"})
-print("\nDeleted Bob Smith's record.")
-```
-
-### **7.4 Delete All Data (Cleanup)**
-
-```python
-collection.delete_many({})
-print("Deleted all student records.")
-```
 
 ---
 
@@ -190,36 +197,6 @@ When done, deactivate the virtual environment:
 ```bash
 deactivate
 ```
-
----
-
-## **Step 9: Troubleshooting**
-
-1. **No data showing in Atlas?**
-   - Ensure you're viewing the correct database and collection.
-   - Refresh the collection page.
-
-2. **Connection issues?**
-   - Verify that your IP is whitelisted in Atlas under **"Network Access."**
-   - Double-check username/password in the connection string.
-
-3. **Module not found?**
-   - Ensure `pymongo` is installed in the correct environment using:
-     ```bash
-     pip list | grep pymongo
-     ```
-
----
-
-## **Step 10: Summary of Steps**
-
-1. **Set up virtual environment:** `python3 -m venv venv && source venv/bin/activate`
-2. **Install dependencies:** `pip install "pymongo[srv]"`
-3. **Prepare JSON file with data.**
-4. **Write Python script to insert and retrieve data.**
-5. **Run the script and verify results in Atlas.**
-6. **Perform additional queries, updates, and deletions.**
-7. **Deactivate the environment when done.**
 
 ---
 
