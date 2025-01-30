@@ -40,24 +40,6 @@ If you are setting up the project for the first time, install the necessary depe
 pip install -r requirements.txt
 ```
 
-If `requirements.txt` does not exist, you can manually install the dependencies:
-
-```bash
-pip install "pymongo[srv]" python-dotenv
-```
-
-Then, generate `requirements.txt` for future use:
-
-```bash
-pip freeze > requirements.txt
-```
-
-Verify installation:
-
-```bash
-pip freeze | grep pymongo
-```
-
 ---
 
 ## **Step 3: Set Up Environment Variables**
