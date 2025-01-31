@@ -8,10 +8,10 @@ These instructions are intended for those setting up their own project. If you a
 
 ## **Step 1: Project Setup**
 
-### **1.1 Create a Project Directory**
+### **1.1 Open Project Directory**
 ```bash
-mkdir mongodb-demo
-cd mongodb-demo
+ls
+cd acm-mongo-fire
 ```
 
 ### **1.2 Set Up a Virtual Environment**

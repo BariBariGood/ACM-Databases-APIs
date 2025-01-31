@@ -8,32 +8,33 @@ This guide will walk you through setting up **MongoDB Atlas** from a fresh accou
 1. Go to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas/register).
 2. Sign up for an account or log in if you already have one.
 3. Click **"Create a New Project"** and give it a name (e.g., `MyMongoProject`).
-4. Click **"Next"** and then **"Create Project"**.
+4. Click **"Next"** and then **"Create a Cluster"**.
 
 ---
 
 ## **Step 2: Deploy a Free Cluster**
-1. In your new project, click **"Build a Database"**.
-2. Under **Shared Clusters**, select **"Create"** (the free-tier cluster).
-3. Choose **AWS, GCP, or Azure** (AWS is recommended).
-4. Select a **region** closest to your location.
 5. Choose the **M0 (Free Tier)** cluster size.
 6. Name your cluster (e.g., `acm-demo-test1`).
-7. Click **"Create Cluster"**.
+7. Click **"Create Deployment"**.
 
 ---
 
 ## **Step 3: Set Up Database Access (User & Password)**
-1. Click on the **"Database Access"** tab on the left.
-2. Click **"Add New Database User"**.
-3. **Username:** Choose a username (e.g., `indelrio`).
+2. Click **"Create Database User"**.
+3. **Username:** Choose a username
 4. **Password:** Choose a strong password.
-5. **Role:** Select **"Atlas Admin"**.
 6. Click **"Add User"**.
+Move on via "Choose a connection method"
 
 ---
 
-## **Step 4: Set Up Network Access (IP Whitelist)**
+## **Step 4: Connect to Your Cluster**
+3. Choose **"Drivers"**.
+4. Select **Python** as the driver and version `4.7 or later`.
+5. copy paste connection string at the bottom into the .env file
+5. Click done
+
+## **Step 5: Set Up Network Access (IP Whitelist)**
 1. Go to **"Network Access"** on the left sidebar.
 2. Click **"Add IP Address"**.
 3. Choose **"Allow Access from Anywhere"** (`0.0.0.0/0`) (Recommended for testing).
@@ -41,12 +42,7 @@ This guide will walk you through setting up **MongoDB Atlas** from a fresh accou
 
 ---
 
-## **Step 5: Connect to Your Cluster**
-1. Go to the **"Clusters"** section.
-2. Click **"Connect"** next to your cluster.
-3. Choose **"Drivers"**.
-4. Select **Python** as the driver and version `4.7 or later`.
-5. Copy the provided **connection string** (it should look like this):
+
 
    ```
    mongodb+srv://<username>:<password>@acm-demo-test1.pabqm.mongodb.net/?retryWrites=true&w=majority
